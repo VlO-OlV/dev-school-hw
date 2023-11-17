@@ -1,0 +1,1 @@
+DELETE FROM users WHERE email = 'linichenko.ivan@lll.kpi.ua';
