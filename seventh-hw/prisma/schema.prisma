@@ -1,0 +1,62 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Product {
+  id       Int              @id @default(autoincrement())
+  name     String
+  category Category
+  amount   Int
+  price    Float
+  order    OrderedProduct[]
+}
+
+model Customer {
+  id          Int      @id @default(autoincrement())
+  first_name  String
+  last_name   String
+  middle_name String?
+  email       String   @unique
+  birth_date  DateTime
+  orders      Order[]
+}
+
+model Employee {
+  id          Int     @id @default(autoincrement())
+  first_name  String
+  last_name   String
+  middle_name String?
+  position    String
+  orders      Order[]
+}
+
+model Order {
+  id            Int              @id @default(autoincrement())
+  employee      Employee         @relation(fields: [employee_id], references: [id])
+  employee_id   Int
+  customer      Customer         @relation(fields: [customer_id], references: [id])
+  customer_id   Int
+  order_address String
+  delivery_cost Float
+  order_date    DateTime         @default(now())
+  product       OrderedProduct[]
+}
+
+model OrderedProduct {
+  product    Product @relation(fields: [product_id], references: [id])
+  product_id Int
+  order      Order   @relation(fields: [order_id], references: [id])
+  order_id   Int
+  amount     Int
+
+  @@id([product_id, order_id])
+}
+
+enum Category {
+  FOOD
+}
