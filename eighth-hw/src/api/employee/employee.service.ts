@@ -1,17 +1,13 @@
 import { Injectable } from '@nestjs/common';
-import { DatabaseService} from '../../database/database.service';
 import { Prisma } from '@prisma/client';
+import { EmployeeRepository } from 'src/database/repositories/EmployeeRepository';
+
 
 @Injectable()
 export class EmployeeService {
-  constructor(private readonly databaseService: DatabaseService) {}
+  constructor(private readonly employeeRepository: EmployeeRepository) {}
 
-  async update(employeeId: number, updateEmployeeDto: Prisma.EmployeeUpdateInput) {
-    return this.databaseService.employee.update({
-      where: {
-        id: employeeId
-      },
-      data: updateEmployeeDto
-    });
+  async updateEmployee(employeeId: number, updateEmployeeDto: Prisma.EmployeeUpdateInput) {
+    return this.employeeRepository.update(employeeId, updateEmployeeDto);
   }
 }

@@ -1,15 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { DatabaseService } from 'src/database/database.service';
+import { OrderRepository } from 'src/database/repositories/OrderRepository';
+
 
 @Injectable()
 export class OrderService {
-  constructor(private readonly databaseService: DatabaseService) {}
+  constructor(private readonly orderRepository: OrderRepository) {}
 
-  async remove(orderId: number) {
-    return this.databaseService.order.delete({
-      where: {
-        id: orderId
-      }
-    });
+  async removeOrder(orderId: number) {
+    return this.orderRepository.remove(orderId);
   }
 }
